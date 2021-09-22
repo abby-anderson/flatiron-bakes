@@ -1,7 +1,7 @@
-import React from 'react';
 import CakeCard from './CakeCard';
 import Header from './Header';
 import SearchBar from './SearchBar';
+import React, { useState } from "react";
 
 const cakes = [
   {
@@ -31,11 +31,14 @@ const cakes = [
 ]
 
 function App() {
+  const [visible, setVisible] = useState(false);
+
   return (
     <>
       <Header />
-      <SearchBar />
-      {cakes.map(each => <CakeCard key={each.flavor} flavor={each.flavor} price={each.price} size={each.size}/>)}
+      {visible? <SearchBar /> : null}
+      <button onClick={() => setVisible(!visible)}>{visible ? 'x' : 'Form'}</button>
+      {cakes.map(eachCake => <CakeCard cake={eachCake}/>)}
     </>
   );
 }

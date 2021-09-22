@@ -2,7 +2,13 @@ import React from 'react';
 
 function SearchBar () {
     return (
-        <h3>Search Bar</h3>
+        <>
+        <form>
+            <label>Search Bar Form</label>
+            <input type="text"></input>
+            <input type="submit"></input>
+        </form>
+        </>
     );
 }
 

@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 
-
-//let eachCake = cakes.map(each => console.log(each))
-
-//would only need to pass props below if the above cakes were declared in the parent component!
-function CakeCard ({flavor, price, size}) {
+function CakeCard ({cake}) {
+    const [selected, setSelected] = useState(null);
+    
+    //should put this handleClick function inside the CakeCard function to limit global scope!  best practice
+    function handleClick () {
+    
+    }
+    
     return (
         <>
-        <h1>{flavor}</h1>
-        <p>${price}</p>
-        <p>{size}</p>
+        <h1>{cake.flavor}</h1>
+        <h1>${cake.price}</h1>
+        <p>{cake.size}</p>
         </>
     );
 }

@@ -6,6 +6,7 @@ function CakeForm ({handleAddCake}) {
         size: '',
         image: '',
         price: 0,
+        liked: false,
     })
 
     function handleChange (e) {

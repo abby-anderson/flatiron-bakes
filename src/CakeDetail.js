@@ -1,6 +1,6 @@
 import React from 'react';
 
-function CakeDetail ({cake}) {
+function CakeDetail ({cake, handleRemoveCake, handleLike}) {
     return (
         <>
         <img src={cake.image} style={{width:"200px"}} />
@@ -8,6 +8,8 @@ function CakeDetail ({cake}) {
         <p>{cake.size}</p>
         <p>${cake.price}</p>
         <p>{cake.description}</p>
+        <button onClick={()=> handleLike(cake)}>{cake.liked ? "❤️" : "💔"}</button>
+        <button onClick={()=> handleRemoveCake(cake.id)}>Delete</button>
         </>
     )
 }

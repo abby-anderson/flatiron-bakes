@@ -15,15 +15,57 @@ function App() {
   const [flavors, setFlavors] = useState([]);
 
   function handleAddCake (cake) {
-    console.log(cake)
-    setCakes([
-      ...cakeList, cake
-    ])
-    console.log('updatedcakelist', cakeList)
+    fetch('http://localhost:4000/cakes', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cake)
+    })
+    .then(response => response.json())
+    .then(newCake => {
+      setCakes([...cakeList, newCake])
+    })
   }
 
-  function handleRemoveCake (cake) {
+  function handleRemoveCake (id) {
+    console.log(id);
+    fetch(`http://localhost:4000/cakes/${id}`, {
+      method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then( () => {
+      //removes cake from cakelist state
+      const filteredCakes = cakeList.filter(cake => cake.id !== id)
+      setCakes(filteredCakes);
+
+      //removes cakes from selected cake state
+      setSelectedCake(null)
+    })
+  }
+
+  function handleLike (cake) {
     console.log(cake)
+    fetch(`http://localhost:4000/cakes/${cake.id}`, {
+      method: "PATCH",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({liked: !cake.liked}),
+    })
+    .then(response => response.json())
+    .then(updatedCake => {
+      const updatedCakeList = cakeList.map(each => each.id === cake.id ? updatedCake : each)
+        // if (each.id === cake.id) {
+        //   return updatedCake;
+        // } else {
+        //   return each;
+        // }
+      //updating only selectedcake state
+      setSelectedCake(updatedCake)
+      //updating the cake in the original cakelist as well 
+      setCakes(updatedCakeList)
+    })
   }
 
   useEffect(() => {
@@ -54,7 +96,7 @@ function App() {
       <FlavorFilter flavors={flavors} handleFlavorSelection={handleFlavorSelection} />
 
       {/* important to note that below we're sending selectedCake as the prop this time instead of the og cake obj! */}
-      {selectedCake ? <CakeDetail cake={selectedCake}/> : null}
+      {selectedCake ? <CakeDetail cake={selectedCake} handleRemoveCake={handleRemoveCake} handleLike={handleLike}/> : null}
 
       {cakeList.map(eachCake => <CakeCard key={eachCake.flavor} setSelectedCake={setSelectedCake} image={eachCake.image} cake={eachCake}/>)}
       
